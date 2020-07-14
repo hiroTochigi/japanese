@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Form from "./module/Form"
 import WordList from "./module/WordList"
-import kuromoji from "/home/hiroyuki/Desktop/web-development/japanese/node_modules/kuromoji/build/kuromoji"
+import kuromoji from "../node_modules/kuromoji/build/kuromoji"
 
 
 class App extends React.Component{
@@ -33,8 +33,10 @@ class App extends React.Component{
     return posList[pos]
   } 
 
-  getMeaning = () => {
-
+  setWordList = (resoleve) => {
+    this.setState((state) => {
+      return {wordList: resoleve}
+    });
   }
 
   handleSubmit = (event) => {
@@ -52,13 +54,13 @@ class App extends React.Component{
 
     promise
     .then(resoleve => {
-      this.setState({wordList:resoleve})
+      this.setWordList(resoleve)
       return resoleve }
     )
     .then(allWords => 
       allWords.map(word => { 
       if(word.pos !== "記号" && !(word.pos === "名詞" && word.pos_detail_1 === "固有名詞")) 
-        { 
+        {
           fetch(`https://cors-anywhere.herokuapp.com/http://beta.jisho.org/api/v1/search/words?keyword=${word.basic_form}%20%23${this.getPos(word.pos)}`)
         .then(response => response.json())
         .then(data => console.log(data))}
@@ -70,6 +72,7 @@ class App extends React.Component{
   render(){
     const sentence = this.state.sentence
     const wordList = this.state.wordList
+    console.log(wordList)
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
