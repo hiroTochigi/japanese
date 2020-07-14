@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.word{
+  font-size: 32px;
+}
+
+#overFlowBox{
+  margin-top: 6em;
+  width: 80%;
+  height: 400px;
+  overflow: auto;
+  margin:0 auto;
+  text-align: justify;
+}
