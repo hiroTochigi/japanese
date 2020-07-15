@@ -12,7 +12,8 @@ class App extends React.Component{
   
     this.state = {
       sentence: '',
-      wordList: []
+      wordList: [],
+      meaning: {}
     };
   }
 
@@ -39,6 +40,12 @@ class App extends React.Component{
     });
   }
 
+  setMeaning = (meaning, key) => {
+    this.setState({
+      meaning: Object.assign(meaning[key] = meaning) 
+    })
+  }
+
   handleSubmit = (event) => {
     const mySentence = this.state.sentence
 
@@ -53,17 +60,19 @@ class App extends React.Component{
     })
 
     promise
-    .then(resoleve => {
-      this.setWordList(resoleve)
-      return resoleve }
+    .then(resolve => {
+      this.setWordList(resolve)
+      return resolve }
     )
     .then(allWords => 
       allWords.map(word => { 
       if(word.pos !== "記号" && !(word.pos === "名詞" && word.pos_detail_1 === "固有名詞")) 
         {
+          let key = word.basic_form + word.word_position
           fetch(`https://cors-anywhere.herokuapp.com/http://beta.jisho.org/api/v1/search/words?keyword=${word.basic_form}%20%23${this.getPos(word.pos)}`)
         .then(response => response.json())
-        .then(data => console.log(data))}
+        .then(data => this.setMeaning(data, key))
+        }
       })
     )
     .catch(error => console.log(error))
@@ -72,7 +81,9 @@ class App extends React.Component{
   render(){
     const sentence = this.state.sentence
     const wordList = this.state.wordList
+    const meaning = this.state.meaning
     console.log(wordList)
+    console.log(meaning)
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
