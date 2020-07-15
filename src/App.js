@@ -61,6 +61,9 @@ class App extends React.Component{
 
     promise
     .then(resolve => {
+      for (let i=0; i<resolve.length; i++){
+        resolve[i]["meaningId"] = resolve[i]["basic_form"] + resolve[i]["word_position"]
+      }
       this.setWordList(resolve)
       return resolve }
     )
@@ -81,9 +84,9 @@ class App extends React.Component{
   render(){
     const sentence = this.state.sentence
     const wordList = this.state.wordList
-    const meaning = this.state.meaning
+    const meaningDict = this.state.meaning
     console.log(wordList)
-    console.log(meaning)
+    console.log(meaningDict)
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
@@ -91,7 +94,10 @@ class App extends React.Component{
         sentnece={sentence} 
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}/>
-        <WordList wordList={wordList}/>
+        <WordList 
+          wordList={wordList}
+          meaningDict={meaningDict}
+        />
       </div>
     );
   }
