@@ -12,8 +12,7 @@ class App extends React.Component{
   
     this.state = {
       sentence: '',
-      wordList: [],
-      meaning: {}
+      wordList: {}
     };
   }
 
@@ -34,17 +33,27 @@ class App extends React.Component{
     return posList[pos]
   } 
 
-  setWordList = (resoleve) => {
+  setWordDict = (wordList) => {
+    let wordDict = {}
+    for (let i=0; i<wordList.length; i++){
+      let key = wordList[i].basic_form + wordList[i].word_position
+      wordDict[key] = wordList[i]
+    }
+    return wordDict
+  }
+
+  setWordListFirst = (wordList) => {
     this.setState((state) => {
-      return {wordList: resoleve}
+      return {wodList: this.setWordDict(wordList)}
     });
   }
 
-  setMeaning = (meaning, key) => {
-    this.setState({
-      meaning: Object.assign(meaning[key] = meaning) 
-    })
-  }
+  setMeaning = (word, meaning) => {
+    let key = word.basic_form + word.word_position
+    let newWordDict = word;
+    newWordDict["meaning"] = meaning 
+    this.setState({wordList: Object.assign(this.state.wordList, this.state.wordList[key] = newWordDict )})
+  } 
 
   handleSubmit = (event) => {
     const mySentence = this.state.sentence
@@ -60,22 +69,17 @@ class App extends React.Component{
     })
 
     promise
-    .then(resolve => {
-      for (let i=0; i<resolve.length; i++){
-        resolve[i]["meaningId"] = resolve[i]["basic_form"] + resolve[i]["word_position"]
-      }
-      this.setWordList(resolve)
-      return resolve }
+    .then(resoleve => {
+      this.setWordListFirst(resoleve)
+      return resoleve }
     )
     .then(allWords => 
       allWords.map(word => { 
       if(word.pos !== "記号" && !(word.pos === "名詞" && word.pos_detail_1 === "固有名詞")) 
-        {
-          let key = word.basic_form + word.word_position
-          fetch("http://localhost:3002/jokes/random")
+        { 
+          fetch(`https://cors-anywhere.herokuapp.com/http://beta.jisho.org/api/v1/search/words?keyword=${word.basic_form}%20%23${this.getPos(word.pos)}`)
         .then(response => response.json())
-        .then(data => this.setMeaning(data, key))
-        }
+        .then(data => this.setMeaning(word, data))}
       })
     )
     .catch(error => console.log(error))
@@ -84,9 +88,7 @@ class App extends React.Component{
   render(){
     const sentence = this.state.sentence
     const wordList = this.state.wordList
-    const meaningDict = this.state.meaning
     console.log(wordList)
-    console.log(meaningDict)
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
@@ -94,10 +96,7 @@ class App extends React.Component{
         sentnece={sentence} 
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}/>
-        <WordList 
-          wordList={wordList}
-          meaningDict={meaningDict}
-        />
+        <WordList wordList={wordList}/>
       </div>
     );
   }
