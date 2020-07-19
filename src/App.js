@@ -72,7 +72,18 @@ class App extends React.Component{
       if(word.pos !== "記号" && !(word.pos === "名詞" && word.pos_detail_1 === "固有名詞")) 
         {
           let key = word.basic_form + word.word_position
-          fetch("http://localhost:3002/jokes/random")
+          const data = {
+            pos: word.pos,
+            word: word.basic_form
+          }
+          fetch("http://localhost:3002/getMeaning", {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+          })
         .then(response => response.json())
         .then(data => this.setMeaning(data, key))
         }
