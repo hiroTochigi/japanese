@@ -1,14 +1,62 @@
 import React from 'react';
 import Word from "./Word"
 
-function WordList(props) {
-    const wordList = props.wordList; 
-    let words
+/*
+class WordList extends React.Component {
+    constructor(props) {
+      super(props);
 
+    }
+
+    getMeaning(id, meaningDict) {
+        var meaning = meaningDict[id]
+        console.log(meaning) 
+    }
+
+    makeWordList(){
+        const { wordList, meaningDict } = this.props 
+        let words
+        console.log(meaningDict)
+        console.log(wordList)
+        if (wordList !== null){
+            words = []
+            for (const [key, value] of Object.entries(wordList)) {
+                this.getMeaning(value.meaningId, meaningDict)
+                words.push(<Word word={value} />)
+            }
+        }else{
+            words = "Enter new sentences"
+        }
+        return words
+    }
+    
+  
+    render() {
+      return (
+        <div id="overFlowBox">
+            <p>{this.makeWordList()}</p>
+        </div>
+      );
+    }
+  }
+*/
+
+
+function getMeaning(id, meaningDict) {
+    console.log(id)
+    var meaning = meaningDict[id]
+    console.log(meaning) 
+}
+
+function WordList(props) {
+    const { wordList, keys} = props 
+    let words
+    console.log(wordList)
     if (wordList !== null){
         words = []
-        for (const [key, value] of Object.entries(wordList)) {
-            words.push(<Word word={value}/>)
+        
+        for (const key of keys) {
+            words.push(<Word word={wordList[key]} />)
           }
     }else{
          words = "Enter new sentences"

@@ -12,8 +12,8 @@ class App extends React.Component{
   
     this.state = {
       sentence: '',
-      wordList: [],
-      meaning: {}
+      wordList: {},
+      keys: [],
     };
   }
 
@@ -34,15 +34,23 @@ class App extends React.Component{
     return posList[pos]
   } 
 
-  setWordList = (resoleve) => {
+  setWordList = (list) => {
     this.setState((state) => {
-      return {wordList: resoleve}
+      return {wordList: list}
+    });
+  }
+
+  setKeys = (list) => {
+    this.setState((state) => {
+      return {keys: list}
     });
   }
 
   setMeaning = (meaning, key) => {
+    var wordList = this.state.wordList
+    wordList[key]["meaning"] = meaning 
     this.setState({
-      meaning: Object.assign(meaning[key] = meaning) 
+      wordList: Object.assign(wordList) 
     })
   }
 
@@ -61,10 +69,14 @@ class App extends React.Component{
 
     promise
     .then(resolve => {
+      var wordList = {}
+      var keys = []
       for (let i=0; i<resolve.length; i++){
-        resolve[i]["meaningId"] = resolve[i]["basic_form"] + resolve[i]["word_position"]
+        wordList[resolve[i]["basic_form"] + resolve[i]["word_position"]] = resolve[i]
+        keys.push(resolve[i]["basic_form"] + resolve[i]["word_position"])
       }
-      this.setWordList(resolve)
+      this.setWordList(wordList)
+      this.setKeys(keys)
       return resolve }
     )
     .then(allWords => 
@@ -95,9 +107,8 @@ class App extends React.Component{
   render(){
     const sentence = this.state.sentence
     const wordList = this.state.wordList
-    const meaningDict = this.state.meaning
-    console.log(wordList)
-    console.log(meaningDict)
+    const keys = this.state.keys
+    
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
@@ -107,7 +118,7 @@ class App extends React.Component{
         handleSubmit={this.handleSubmit}/>
         <WordList 
           wordList={wordList}
-          meaningDict={meaningDict}
+          keys={keys}
         />
       </div>
     );
