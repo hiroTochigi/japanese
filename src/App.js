@@ -29,7 +29,6 @@ class App extends React.Component{
     "形容詞": "adjective",
     "形容動詞": "adjective",
     "助詞": "particle", }
-    console.log(posList[pos])
     return posList[pos]
   } 
 
@@ -52,7 +51,7 @@ class App extends React.Component{
   handleSubmit = (event) => {
     const mySentence = this.state.sentence
 
-    let promise = new Promise((res, err) => {
+    let kuromojiPromise = new Promise((res, err) => {
       kuromoji.builder({ dicPath: "/dict" }).build((error, tokenizer) =>{
         const path = tokenizer.tokenize(mySentence)
         if(path){
@@ -62,13 +61,14 @@ class App extends React.Component{
       }) 
     })
 
-    promise
+    kuromojiPromise
     .then(resolve => {
       var wordList = {}
       var keys = []
       for (let i=0; i<resolve.length; i++){
-        wordList[resolve[i]["basic_form"] + resolve[i]["word_position"]] = resolve[i]
-        keys.push(resolve[i]["basic_form"] + resolve[i]["word_position"])
+        let key = resolve[i]["basic_form"] + resolve[i]["word_position"]
+        wordList[key] = resolve[i]
+        keys.push(key)
       }
       this.setList(wordList, keys)
       return resolve }
@@ -99,9 +99,7 @@ class App extends React.Component{
   }
 
   render(){
-    const sentence = this.state.sentence
-    const wordList = this.state.wordList
-    const keys = this.state.keys
+    const {sentence, wordList, keys} = this.state;
     
     return (
       <div className="App">

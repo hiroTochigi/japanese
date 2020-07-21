@@ -1,6 +1,9 @@
 import React from 'react';
 import Word from "./Word"
 
+// If wordList is empty, render Enter new sentences
+// Otherwise, render words.
+
 function WordList(props) {
     const { wordList, keys} = props 
     let words = wordList ? 
