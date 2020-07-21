@@ -4,7 +4,6 @@ import Form from "./module/Form"
 import WordList from "./module/WordList"
 import kuromoji from "../node_modules/kuromoji/build/kuromoji"
 
-
 class App extends React.Component{
 
   constructor(props) {
@@ -12,8 +11,8 @@ class App extends React.Component{
   
     this.state = {
       sentence: '',
-      wordList: [],
-      meaning: {}
+      wordList: {},
+      keys: [],
     };
   }
 
@@ -30,26 +29,29 @@ class App extends React.Component{
     "形容詞": "adjective",
     "形容動詞": "adjective",
     "助詞": "particle", }
-    console.log(posList[pos])
     return posList[pos]
   } 
 
-  setWordList = (resoleve) => {
+  setList = (list, keySet) => {
     this.setState((state) => {
-      return {wordList: resoleve}
+      return {wordList: list,
+              keys: keySet
+      }
     });
   }
 
   setMeaning = (meaning, key) => {
+    var wordList = this.state.wordList
+    wordList[key]["meaning"] = meaning 
     this.setState({
-      meaning: Object.assign(meaning[key] = meaning) 
+      wordList: Object.assign(wordList) 
     })
   }
 
   handleSubmit = (event) => {
     const mySentence = this.state.sentence
 
-    let promise = new Promise((res, err) => {
+    let kuromojiPromise = new Promise((res, err) => {
       kuromoji.builder({ dicPath: "/dict" }).build((error, tokenizer) =>{
         const path = tokenizer.tokenize(mySentence)
         if(path){
@@ -59,12 +61,16 @@ class App extends React.Component{
       }) 
     })
 
-    promise
+    kuromojiPromise
     .then(resolve => {
+      var wordList = {}
+      var keys = []
       for (let i=0; i<resolve.length; i++){
-        resolve[i]["meaningId"] = resolve[i]["basic_form"] + resolve[i]["word_position"]
+        let key = resolve[i]["basic_form"] + resolve[i]["word_position"]
+        wordList[key] = resolve[i]
+        keys.push(key)
       }
-      this.setWordList(resolve)
+      this.setList(wordList, keys)
       return resolve }
     )
     .then(allWords => 
@@ -93,11 +99,8 @@ class App extends React.Component{
   }
 
   render(){
-    const sentence = this.state.sentence
-    const wordList = this.state.wordList
-    const meaningDict = this.state.meaning
-    console.log(wordList)
-    console.log(meaningDict)
+    const {sentence, wordList, keys} = this.state;
+    
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
@@ -107,7 +110,7 @@ class App extends React.Component{
         handleSubmit={this.handleSubmit}/>
         <WordList 
           wordList={wordList}
-          meaningDict={meaningDict}
+          keys={keys}
         />
       </div>
     );

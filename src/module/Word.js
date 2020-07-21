@@ -3,7 +3,7 @@ import WordBox from "./WordBox"
 import kanaToRoman from "./kanaToRoman";
 
 function Word(props) {
-
+    //console.log(props.word)
     let { basic_form, 
         conjugated_form,
         conjugated_type,
