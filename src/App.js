@@ -4,7 +4,6 @@ import Form from "./module/Form"
 import WordList from "./module/WordList"
 import kuromoji from "../node_modules/kuromoji/build/kuromoji"
 
-
 class App extends React.Component{
 
   constructor(props) {
@@ -34,15 +33,11 @@ class App extends React.Component{
     return posList[pos]
   } 
 
-  setWordList = (list) => {
+  setList = (list, keySet) => {
     this.setState((state) => {
-      return {wordList: list}
-    });
-  }
-
-  setKeys = (list) => {
-    this.setState((state) => {
-      return {keys: list}
+      return {wordList: list,
+              keys: keySet
+      }
     });
   }
 
@@ -75,8 +70,7 @@ class App extends React.Component{
         wordList[resolve[i]["basic_form"] + resolve[i]["word_position"]] = resolve[i]
         keys.push(resolve[i]["basic_form"] + resolve[i]["word_position"])
       }
-      this.setWordList(wordList)
-      this.setKeys(keys)
+      this.setList(wordList, keys)
       return resolve }
     )
     .then(allWords => 
