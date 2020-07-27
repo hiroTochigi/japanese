@@ -6,7 +6,6 @@ function WordBox(props) {
     let setCurrentMeaninkgKey = (event) => {
         props.setCurrentMeaninkgKey(meaningKey)
     }
-    console.log(meaningKey)
     
     return(
         <span onClick={setCurrentMeaninkgKey} className="word"> 

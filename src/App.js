@@ -43,7 +43,6 @@ class App extends React.Component{
 
   setCurrentMeaninkgKey = (clickedKey) =>{
     this.setState({currentMeaningKey:clickedKey})
-    console.log(clickedKey)
   }
 
   getSuitableMeaning = (basic_form, meaning) => {
@@ -108,7 +107,6 @@ class App extends React.Component{
             pos: word.pos,
             word: word.basic_form
           }
-          console.log(word.basic_form)
           fetch("http://localhost:3002/getMeaning", {
             method: 'POST',
             headers: {

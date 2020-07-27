@@ -11,7 +11,6 @@ function changeKanaToRoma(reading){
 }
 
 function Word(props) {
-    //console.log(props.word)
     let { 
         pos,
         reading,
@@ -34,20 +33,3 @@ function Word(props) {
     }
 
 export default Word;
-
-/*
-<tr>
-            <td>{basic_form}</td>
-            <td>{conjugated_form}</td>
-            <td>{conjugated_type}</td>
-            <td>{pos}</td>
-            <td>{pos_detail_1}</td>
-            <td>{pos_detail_2}</td>
-            <td>{pos_detail_3}</td>
-            <td>{pronunciation}</td>
-            <td>{reading}</td>
-            <td>{surface_form}</td>
-            <td>{word_type}</td>
-            <td></td>
-        </tr>
-*/
