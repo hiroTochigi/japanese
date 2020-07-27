@@ -5,11 +5,12 @@ import Word from "./Word"
 // Otherwise, render words.
 
 function WordList(props) {
-    const { wordList, keys} = props 
+    const { wordList, keys, setCurrentMeaninkgKey } = props 
     let words = wordList ? 
         keys.map(key => <Word 
                         word={wordList[key]}
-                        meaningKey={key}/>) 
+                        meaningKey={key}
+                        setCurrentMeaninkgKey={setCurrentMeaninkgKey}/>) 
         : 
         "Enter new sentences"
     return( 

@@ -41,8 +41,11 @@ class App extends React.Component{
     });
   }
 
-  getSuitableMeaning = (basic_form, meaning) => {
+  setCurrentMeaninkgKey = (clickedKey) =>{
+    this.setState({currentMeaningKey:clickedKey})
+  }
 
+  getSuitableMeaning = (basic_form, meaning) => {
     let suitableMeaning = ""
     meaning["data"].forEach(element => {
         if (element.slug === basic_form){
@@ -54,8 +57,7 @@ class App extends React.Component{
         return meaning["data"][0]
     }
     return suitableMeaning
-    
-}
+  }
 
   setMeaning = (meaning, key, basic_form) => {
     var wordList = this.state.wordList
@@ -105,7 +107,6 @@ class App extends React.Component{
             pos: word.pos,
             word: word.basic_form
           }
-          console.log(word.basic_form)
           fetch("http://localhost:3002/getMeaning", {
             method: 'POST',
             headers: {
@@ -135,6 +136,7 @@ class App extends React.Component{
         <WordList 
           wordList={wordList}
           keys={keys}
+          setCurrentMeaninkgKey={this.setCurrentMeaninkgKey}
         />
       </div>
     );
