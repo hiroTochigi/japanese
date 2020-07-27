@@ -2,6 +2,14 @@ import React from 'react';
 import WordBox from "./WordBox"
 import kanaToRoman from "./kanaToRoman";
 
+function changeKanaToRoma(reading){
+
+    if (typeof reading === 'string' || typeof reading === 'number'){
+        return kanaToRoman(reading)
+    }
+    return reading
+}
+
 function Word(props) {
     //console.log(props.word)
     let { basic_form, 
@@ -14,12 +22,14 @@ function Word(props) {
         pronunciation,
         reading,
         surface_form,
+        meaning,
         word_type} = props.word
+
+        let key = props.props.meaningKey
     
-        if (typeof reading === 'string' || typeof reading === 'number'){
-            reading = kanaToRoman(reading)
-        }
-            
+        reading = changeKanaToRoma(reading)
+        console.log(key)
+                    
         return(
             <WordBox
             pos={pos}

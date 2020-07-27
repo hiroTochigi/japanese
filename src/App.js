@@ -13,6 +13,7 @@ class App extends React.Component{
       sentence: '',
       wordList: {},
       keys: [],
+      currentMeaningKey: "",
     };
   }
 
@@ -40,12 +41,34 @@ class App extends React.Component{
     });
   }
 
-  setMeaning = (meaning, key) => {
+  getSuitableMeaning = (basic_form, meaning) => {
+
+    let suitableMeaning = ""
+    meaning["data"].forEach(element => {
+        if (element.slug === basic_form){
+            suitableMeaning = element
+        }         
+    });
+
+    if (suitableMeaning === ""){
+        return meaning["data"][0]
+    }
+    return suitableMeaning
+    
+}
+
+  setMeaning = (meaning, key, basic_form) => {
     var wordList = this.state.wordList
-    wordList[key]["meaning"] = meaning 
+    wordList[key]["meaning"] = this.getSuitableMeaning(basic_form, meaning) 
     this.setState({
       wordList: Object.assign(wordList) 
     })
+  }
+
+  shouldGetMeaning = (word) => {
+    return word.basic_form !== "*"
+           && word.pos !== "記号" &&
+           !(word.pos === "名詞" && word.pos_detail_1 === "固有名詞")
   }
 
   handleSubmit = (event) => {
@@ -75,13 +98,14 @@ class App extends React.Component{
     )
     .then(allWords => 
       allWords.map(word => { 
-      if(word.pos !== "記号" && !(word.pos === "名詞" && word.pos_detail_1 === "固有名詞")) 
+      if(this.shouldGetMeaning(word)) 
         {
           let key = word.basic_form + word.word_position
           const data = {
             pos: word.pos,
             word: word.basic_form
           }
+          console.log(word.basic_form)
           fetch("http://localhost:3002/getMeaning", {
             method: 'POST',
             headers: {
@@ -91,7 +115,7 @@ class App extends React.Component{
             body: JSON.stringify(data),
           })
         .then(response => response.json())
-        .then(data => this.setMeaning(data, key))
+        .then(data => this.setMeaning(data, key, word.basic_form))
         }
       })
     )
@@ -105,9 +129,9 @@ class App extends React.Component{
       <div className="App">
         <h1>Japanese Learning Center</h1>
         <Form
-        sentnece={sentence} 
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}/>
+          sentnece={sentence} 
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}/>
         <WordList 
           wordList={wordList}
           keys={keys}

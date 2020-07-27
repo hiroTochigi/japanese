@@ -7,7 +7,9 @@ import Word from "./Word"
 function WordList(props) {
     const { wordList, keys} = props 
     let words = wordList ? 
-        keys.map(key => <Word word={wordList[key]} />) 
+        keys.map(key => <Word 
+                        word={wordList[key]}
+                        meaningKey={key}/>) 
         : 
         "Enter new sentences"
     return( 
