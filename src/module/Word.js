@@ -12,30 +12,24 @@ function changeKanaToRoma(reading){
 
 function Word(props) {
     //console.log(props.word)
-    let { basic_form, 
-        conjugated_form,
-        conjugated_type,
+    let { 
         pos,
-        pos_detail_1,
-        pos_detail_2,
-        pos_detail_3,
-        pronunciation,
         reading,
         surface_form,
-        meaning,
-        word_type} = props.word
-
-        let key = props.props.meaningKey
+        } = props.word
+    let setCurrentMeaninkgKey = props.setCurrentMeaninkgKey
+    let meaningKey = props.meaningKey
     
-        reading = changeKanaToRoma(reading)
-        console.log(key)
-                    
-        return(
-            <WordBox
-            pos={pos}
-            surface_form={surface_form}
-            reading={reading} 
-            />
+    reading = changeKanaToRoma(reading)
+                
+    return(
+        <WordBox
+        setCurrentMeaninkgKey={setCurrentMeaninkgKey}
+        meaningKey={meaningKey}
+        pos={pos}
+        surface_form={surface_form}
+        reading={reading} 
+        />
         )
     }
 
