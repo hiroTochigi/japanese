@@ -26,14 +26,24 @@ class App extends React.Component{
     {
     "名詞": "noun",
     "動詞": "verb", 
-    "助動詞": "verb",
-    "形容詞": "adjective",
-    "形容動詞": "adjective",
+    "助動詞": "Auxiliary verb",
+    "形容詞": "I-adjective",
+    "形容動詞": "Na-adjective",
     "助詞": "particle", }
     return posList[pos]
-  } 
+  }
+  
+  changeValue = (list) => {
+    for (let key in list){
+      console.log(key)
+      console.log(list[key])
+      list[key].pos = this.getPos(list[key].pos) 
+    }
+    return list
+  }
 
   setList = (list, keySet) => {
+    list = this.changeValue(list)
     this.setState((state) => {
       return {wordList: list,
               keys: keySet
@@ -133,7 +143,7 @@ class App extends React.Component{
           sentnece={sentence} 
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}/>
-        <WordList 
+        <WordList
           wordList={wordList}
           keys={keys}
           setCurrentMeaninkgKey={this.setCurrentMeaninkgKey}
