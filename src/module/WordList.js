@@ -7,7 +7,8 @@ import Word from "./Word"
 function WordList(props) {
     const { wordList, keys, setCurrentMeaninkgKey } = props 
     let words = wordList ? 
-        keys.map(key => <Word 
+        keys.map(key => <Word
+                        key={key} 
                         word={wordList[key]}
                         meaningKey={key}
                         setCurrentMeaninkgKey={setCurrentMeaninkgKey}/>) 
