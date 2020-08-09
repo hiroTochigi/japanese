@@ -1,4 +1,5 @@
 import React from 'react';
+import "./Form.css"
 
 class Form extends React.Component {
     constructor(props) {
@@ -17,14 +18,11 @@ class Form extends React.Component {
     render() {
       const sentence = this.props.sentence
       return (
-        <div>
+        <div className="form-box">
             <p>Enter Japanese Sentence</p>
-            <div>
-              <label>
-                  Name:
-                  <textarea value={sentence}
+            <div className="form">
+              <input type="search" value={sentence}
                   onChange={this.handleChange}/>
-              </label>
               <input type="submit"
               onClick={this.handleSubmit} />
             </div>

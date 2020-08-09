@@ -1,0 +1,12 @@
+.card {
+  /* Add shadows to create the "card" effect */
+  text-align: justify;
+  border: 2px solid;
+  padding: 3px 20px;
+}
+
+.cardDisplay{
+    width:50%;
+    margin: 0 auto;
+}
+
