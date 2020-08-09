@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Form from "./module/Form"
 import WordList from "./module/WordList"
+import MeaningBox from "./module/MeaningBox"
 import kuromoji from "../node_modules/kuromoji/build/kuromoji"
 
 class App extends React.Component{
@@ -134,8 +135,16 @@ class App extends React.Component{
   }
 
   render(){
-    const {sentence, wordList, keys} = this.state;
+    let meaning;
+    const {sentence, wordList, keys, currentMeaningKey} = this.state;
+    const haveMeaning = (wordList[currentMeaningKey] !== undefined)
     
+    if (haveMeaning){
+      meaning = wordList[currentMeaningKey].meaning
+    }
+
+    console.log(haveMeaning)
+
     return (
       <div className="App">
         <h1>Japanese Learning Center</h1>
@@ -148,6 +157,11 @@ class App extends React.Component{
           keys={keys}
           setCurrentMeaninkgKey={this.setCurrentMeaninkgKey}
         />
+        {(haveMeaning && meaning !== undefined) ? 
+        <MeaningBox
+          meaning={meaning}
+        />
+         : null}
       </div>
     );
   }
